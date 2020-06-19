@@ -1,0 +1,315 @@
+set cut_paste_input [stack 0]
+version 11.3 v2
+push 0
+push 0
+push $cut_paste_input
+Group {
+ inputs 3
+ name AndrewsRotoCheck2
+ selected true
+ xpos 3213
+ ypos 650
+ addUserKnob {20 User}
+ addUserKnob {26 ReformatPlate l "Plate Size"}
+ addUserKnob {41 type T NoOp1.type}
+ addUserKnob {41 format l "output format" t "Best to set this first so the checkerboard and constants line up properly without getting stretched." T NoOp1.format}
+ addUserKnob {41 resize l "resize type" T NoOp1.resize}
+ addUserKnob {41 center T NoOp1.center}
+ addUserKnob {26 ""}
+ addUserKnob {41 InvertMatte l "Invert Alpha" T Invert4.disable}
+ addUserKnob {4 Views l View M {"Black Constant" "White Constant" Brighter Darker Checkerboard Grey "Colour Constant" "Colour Multiply" "Colour Plus" Custom_BG "" "" "" "" ""}}
+ Views "Colour Multiply"
+ addUserKnob {41 color l "Constant Color" T Constant6.color}
+ addUserKnob {7 Overallmix l "Overall Mix"}
+ addUserKnob {26 Showshapesdivider l "" +STARTLINE}
+ addUserKnob {41 disable_1 l "Hide Rough Splines" t "This uses an edge detect on your alpha to help spot holes in your matte." T Merge1.disable}
+ addUserKnob {41 color_1 l "Spline Color" T Constant8.color}
+ addUserKnob {26 ""}
+ addUserKnob {26 Owner l "Created by" T "Andrew Zeller"}
+ addUserKnob {4 JokeButton l "Emergency Options" M {"Choose from below" "Wait until AI is smart enough to automatically complete the roto for me" "Outsource the roto (if I can wait on it)" "Pretend I forgot about the deadline" "Blame the computer" "Blame Nuke" "Blame the world" "Just do it" "" "" "" ""}}
+}
+ Input {
+  inputs 0
+  name Alpha
+  xpos 509
+  ypos -109
+  number 1
+ }
+ Dot {
+  name Dot37
+  label ALPHA
+  note_font_size 44
+  xpos 543
+  ypos -68
+ }
+set N5a95f20 [stack 0]
+ EdgeDetectWrapper {
+  channels alpha
+  name EdgeDetect1
+  xpos 509
+  ypos 426
+ }
+ Dilate {
+  channels alpha
+  size -1.4
+  name Dilate1
+  xpos 509
+  ypos 492
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 1}
+  color_panelDropped true
+  name Constant8
+  xpos 333
+  ypos 468
+ }
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  name Reformat2
+  xpos 333
+  ypos 578
+ }
+ set C5abb3c0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy9
+  xpos 509
+  ypos 572
+ }
+ Premult {
+  name Premult22
+  xpos 509
+  ypos 760
+ }
+push $N5a95f20
+ Invert {
+  channels alpha
+  name Invert4
+  xpos 744
+  ypos 553
+ }
+ Input {
+  inputs 0
+  name Plate
+  xpos 952
+  ypos 60
+ }
+ Dot {
+  name Dot3
+  xpos 986
+  ypos 234
+ }
+set N5af0680 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 1044
+  ypos 559
+ }
+ Premult {
+  name Premult21
+  xpos 1044
+  ypos 701
+ }
+push $N5af0680
+ Shuffle {
+  alpha white
+  name Shuffle2
+  xpos 1107
+  ypos 499
+ }
+ Dot {
+  name Dot2
+  xpos 1171
+  ypos 582
+ }
+ Input {
+  inputs 0
+  name Custom_BG
+  xpos 1922
+  ypos 182
+  number 2
+ }
+clone $C5abb3c0 {
+  xpos 1922
+  ypos 298
+  selected false
+ }
+push $N5af0680
+ Shuffle {
+  alpha white
+  name Shuffle6
+  xpos 1245
+  ypos 231
+ }
+set N5b36b20 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 1 0}
+  color_panelDropped true
+  name Constant6
+  xpos 1627
+  ypos 14
+  addUserKnob {20 User}
+ }
+clone $C5abb3c0 {
+  xpos 1627
+  ypos 140
+  selected false
+ }
+set N5b50130 [stack 0]
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge30
+  xpos 1627
+  ypos 265
+ }
+push $N5b36b20
+push $N5b50130
+ Dot {
+  name Dot1
+  xpos 1763
+  ypos 143
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge31
+  xpos 1729
+  ypos 356
+ }
+push $N5b50130
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.18 0.18 0.18 0}
+  name Constant7
+  xpos 1473
+  ypos 3
+ }
+clone $C5abb3c0 {
+  xpos 1473
+  ypos 114
+  selected false
+ }
+ CheckerBoard2 {
+  inputs 0
+  name CheckerBoard2
+  xpos 1325
+  ypos 5
+ }
+clone $C5abb3c0 {
+  xpos 1325
+  ypos 122
+  selected false
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos 1325
+  ypos 176
+ }
+push $N5af0680
+ EXPTool {
+  mode Stops
+  red -2
+  green -2
+  blue -2
+  name Exposure2
+  label Darken
+  xpos 1305
+  ypos 443
+ }
+push $N5af0680
+ EXPTool {
+  mode Stops
+  red 2
+  green 2
+  blue 2
+  name Exposure1
+  label Brighten
+  xpos 1299
+  ypos 496
+ }
+push $N5b36b20
+ Shuffle {
+  red white
+  green white
+  blue white
+  name Shuffle1
+  label WHITE
+  xpos 1339
+  ypos 301
+ }
+push $N5b36b20
+ Shuffle {
+  red black
+  green black
+  blue black
+  name Shuffle8
+  label BLACK
+  xpos 1323
+  ypos 355
+ }
+ Switch {
+  inputs 10
+  which {{parent.Views}}
+  name Switch7
+  xpos 1473
+  ypos 538
+ }
+ Merge2 {
+  inputs 2
+  mix {{Overallmix}}
+  name Merge2
+  selected true
+  xpos 1473
+  ypos 579
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge28
+  xpos 1473
+  ypos 701
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 1473
+  ypos 760
+  disable true
+ }
+set N59863b0 [stack 0]
+ Output {
+  name Output1
+  xpos 1473
+  ypos 1038
+ }
+push $N5af0680
+ NoOp {
+  name NoOp1
+  xpos 845
+  ypos 318
+  addUserKnob {20 User}
+  addUserKnob {26 ReformatPlate l "Plate Size" t "Set this to match your plate size first."}
+  addUserKnob {41 type T Reformat2.type}
+  addUserKnob {41 format l "output format" T Reformat2.format}
+  addUserKnob {41 resize l "resize type" T Reformat2.resize}
+  addUserKnob {41 center -STARTLINE T Reformat2.center}
+  addUserKnob {26 ""}
+  addUserKnob {6 AlphaInvert l "Invert Alpha" +STARTLINE}
+ }
+push $N59863b0
+ Viewer {
+  frame_range 1-96
+  name Viewer1
+  xpos 1648
+  ypos 844
+ }
+end_group
